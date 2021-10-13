@@ -27,7 +27,8 @@ namespace MathForGames
             {
                 Update();
                 Draw();
-                Thread.Sleep(150);
+
+                Thread.Sleep(50);
             }
 
             //Call end for the entire application
@@ -60,6 +61,10 @@ namespace MathForGames
         private void Update()
         {
             _scenes[_currentSceneIndex].Update();
+
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
+
         }
 
         /// <summary>
@@ -163,6 +168,14 @@ namespace MathForGames
             //Set the buffer at the index of the given position
             _buffer[(int)position.X, (int)position.Y] = icon;
             return true;
+        }
+
+        /// <summary>
+        /// Ends the application
+        /// </summary>
+        public static void CloseApplication()
+        {
+            _applicationShouldClose = true;
         }
     }
 }
