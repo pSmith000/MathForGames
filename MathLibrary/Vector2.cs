@@ -48,6 +48,12 @@ namespace MathLibrary
             return this / Magnitude;
         }
 
+        public static float Distance(Vector2 lhs, Vector2 rhs)
+        {
+            return (rhs - lhs).Magnitude;
+        }
+
+
         /// <summary>
         /// Adds the x value of the second vector to the first, and adds the y value of the second vector to the first.
         /// </summary>

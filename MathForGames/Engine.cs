@@ -61,8 +61,18 @@ namespace MathForGames
             Raylib.SetTargetFPS(60);
 
             Scene scene = new Scene();
+
             Player player = new Player('@', 10, 10, 100, Color.DARKPURPLE, "Player");
-            Actor actor = new Actor('A', 5, 5, Color.BLACK, "Actor");
+            CircleCollider playerCircleCollider = new CircleCollider(50, player);
+
+            Actor actor = new Actor('A', 80, 80, Color.BLACK, "Actor");
+            AABBCollider enemyCollider = new AABBCollider(50, 50, actor);
+            actor.Collider = enemyCollider;
+
+            AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
+            player.Collider = playerCircleCollider;
+
+
 
             scene.AddActor(player);
             scene.AddActor(actor);

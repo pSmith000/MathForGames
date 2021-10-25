@@ -12,13 +12,14 @@ namespace MathForGames
         public Color color;
     }
 
-
     class Actor
     {
         private Icon _icon;
         private string _name;
         private Vector2 _position;
         private bool _started;
+        private Vector2 _forward;
+        private Collider _collider;
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -37,6 +38,18 @@ namespace MathForGames
         public Icon Icon
         {
             get { return _icon; }
+        }
+
+        public Vector2 Forward
+        {
+            get { return _forward; }
+            set { _forward = value; }
+        }
+
+        public Collider Collider
+        {
+            get { return _collider; }
+            set { _collider = value; }
         }
 
         public Actor(char icon, float x, float y, Color color, string name = "Actor") :
@@ -62,7 +75,8 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            Raylib.DrawText(Icon.Symbol.ToString(), (int)Position.X, (int)Position.Y, 50, Icon.color);
+            Raylib.DrawText(Icon.Symbol.ToString(), (int)Position.X - 18, (int)Position.Y - 28, 50, Icon.color);
+            Collider.Draw();
         }
 
         public void End()
@@ -70,9 +84,18 @@ namespace MathForGames
 
         }
 
-        public virtual void OnCollision(Actor actor)
+        public virtual void OnCollision(Actor other)
         {
 
+        }
+
+        public virtual bool CheckForCollision(Actor other)
+        {
+            //Return false if either actor doesn't have a collider attached 
+            if (Collider == null || other.Collider == null)
+                return false;
+
+            return Collider.CheckCollision(other);
         }
     }
 }
