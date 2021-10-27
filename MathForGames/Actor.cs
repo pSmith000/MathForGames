@@ -6,20 +6,18 @@ using Raylib_cs;
 
 namespace MathForGames
 {
-    struct Icon
-    {
-        public char Symbol;
-        public Color color;
-    }
 
     class Actor
     {
-        private Icon _icon;
         private string _name;
-        private Vector2 _position;
         private bool _started;
         private Vector2 _forward;
         private Collider _collider;
+        private Matrix3 _transform = Matrix3.Identity;
+        private Matrix3 _translation = Matrix3.Identity;
+        private Matrix3 _rotation = Matrix3.Identity;
+        private Matrix3 _scale = Matrix3.Identity;
+        private Sprite _sprite;
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -31,13 +29,12 @@ namespace MathForGames
 
         public Vector2 Position
         {
-            get { return _position;  }
-            set { _position = value; }
-        }
-
-        public Icon Icon
-        {
-            get { return _icon; }
+            get { return new Vector2(_transform.M02, _transform.M12);  }
+            set 
+            { 
+                _transform.M02 = value.X;
+                _transform.M12 = value.Y;
+            }
         }
 
         public Vector2 Forward
@@ -46,21 +43,29 @@ namespace MathForGames
             set { _forward = value; }
         }
 
+        public Sprite Sprite
+        {
+            get { return _sprite; }
+            set { _sprite = value; }
+        }
+
         public Collider Collider
         {
             get { return _collider; }
             set { _collider = value; }
         }
 
-        public Actor(char icon, float x, float y, Color color, string name = "Actor") :
-            this(icon, new Vector2 { X = x, Y = y }, color, name) {}
+        public Actor(float x, float y, string name = "Actor", string path = "") :
+            this(new Vector2 { X = x, Y = y }, name, path) {}
 
 
-        public Actor(char icon, Vector2 position, Color color, string name = "Actor")
+        public Actor(Vector2 position, string name = "Actor", string path = "")
         {
-            _icon = new Icon { Symbol = icon, color = color };
-            _position = position;
+            Position = position;
             _name = name;
+
+            if (path != "")
+                _sprite = new Sprite(path);
         }
 
         public virtual void Start()
@@ -70,12 +75,14 @@ namespace MathForGames
 
         public virtual void Update(float deltaTime)
         {
+            _transform = _translation * _rotation * _scale;
             Console.WriteLine(_name + ": " + Position.X + ", " + Position.Y);
         }
 
         public virtual void Draw()
         {
-            Raylib.DrawText(Icon.Symbol.ToString(), (int)Position.X - 18, (int)Position.Y - 28, 50, Icon.color);
+            if (_sprite != null)
+                _sprite.Draw(_transform);
             Collider.Draw();
         }
 
@@ -96,6 +103,37 @@ namespace MathForGames
                 return false;
 
             return Collider.CheckCollision(other);
+        }
+
+        public void SetTranslation(float translationX, float translationY)
+        {
+
+        }
+
+        public void Translate(float translationX, float translationY)
+        {
+
+        }
+
+        public void SetRotation(float radians)
+        {
+
+        }
+
+        public void Rotate(float radians)
+        {
+
+        }
+
+        public void SetScale(float x, float y)
+        {
+            _scale.M00 = x;
+            _scale.M11 = y;
+        }
+
+        public void Scale(float x, float y)
+        {
+
         }
     }
 }
