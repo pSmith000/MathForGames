@@ -61,7 +61,7 @@ namespace MathForGames
 
         public Actor(Vector2 position, string name = "Actor", string path = "")
         {
-            Position = position;
+            SetTranslation(position.X, position.Y);
             _name = name;
 
             if (path != "")
@@ -107,33 +107,32 @@ namespace MathForGames
 
         public void SetTranslation(float translationX, float translationY)
         {
-
+            _translation = Matrix3.CreateTranslation(translationX, translationY);
         }
 
         public void Translate(float translationX, float translationY)
         {
-
+            _translation *= Matrix3.CreateTranslation(translationX, translationY);
         }
 
         public void SetRotation(float radians)
         {
-
+            _rotation = Matrix3.CreateRotation(radians);
         }
 
         public void Rotate(float radians)
         {
-
+            _rotation *= Matrix3.CreateRotation(radians);
         }
 
         public void SetScale(float x, float y)
         {
-            _scale.M00 = x;
-            _scale.M11 = y;
+            _scale = Matrix3.CreateScale(x, y);
         }
 
         public void Scale(float x, float y)
         {
-
+            _scale *= Matrix3.CreateScale(x, y);
         }
     }
 }

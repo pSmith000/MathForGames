@@ -10,6 +10,7 @@ namespace MathForGames
     {
         private float _speed;
         private Vector2 _velocity;
+        int i = 80;
 
         public float Speed
         {
@@ -42,7 +43,26 @@ namespace MathForGames
 
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
-            Position += Velocity;
+            Translate(Velocity.X, Velocity.Y);
+
+
+            if (xDirection > 0)
+                SetRotation(0);
+            if (xDirection > 0 && yDirection < 0)
+                SetRotation((float)-Math.PI / 4);
+            if (xDirection < 0)
+                SetRotation((float)Math.PI);
+            if (xDirection < 0 && yDirection > 0)
+                SetRotation((float)(3*Math.PI) / 4);
+            if (yDirection > 0)
+                SetRotation((float)Math.PI / 2);
+            if (yDirection > 0 && xDirection > 0)
+                SetRotation((float)Math.PI / 4);
+            if (yDirection < 0 && xDirection == 0)
+                SetRotation((float)-Math.PI / 2);
+
+
+
 
             base.Update(deltaTime);
         }
