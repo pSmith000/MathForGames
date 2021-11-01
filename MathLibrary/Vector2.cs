@@ -24,6 +24,14 @@ namespace MathLibrary
             }
         }
 
+        /// <param name="lhs">The left hand side of the operation</param>
+        /// <param name="rhs">The right hand side of the operation</param>
+        /// <returns>The dot product of the first vector on to the second</returns>
+        public static float DotProduct(Vector2 lhs, Vector2 rhs)
+        {
+            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y);
+        }
+
         /// <summary>
         /// Gets the normalized version of this vector without changing it
         /// </summary>

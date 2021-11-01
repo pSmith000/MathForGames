@@ -10,6 +10,7 @@ namespace MathForGames
     {
         private float _speed;
         private Vector2 _velocity;
+        private Player _player;
 
         public float Speed
         {
@@ -23,10 +24,27 @@ namespace MathForGames
             set { _velocity = value; }
         }
 
-        public Enemy(float x, float y, float speed, string name = "Actor", string path = "")
+        public Enemy(float x, float y, float speed, Player player, string name = "Actor", string path = "")
             : base( x, y, name, path)
         {
+            _player = player;
             _speed = speed;
+        }
+
+        public override void Update(float deltaTime)
+        {
+            Vector2 moveDirection = _player.LocalPosition - LocalPosition;
+
+            Velocity = moveDirection.Normalized * Speed * deltaTime;
+
+            LocalPosition += Velocity;
+
+            base.Update(deltaTime);
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
         }
     }
 }
