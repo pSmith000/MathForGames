@@ -1,35 +1,4 @@
-﻿Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
-
-@pSmith000
-devinbroussard
-/
-Raylib-Shooter
-Public
-generated from devinbroussard/Math-For-Games
-1
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Raylib-Shooter/Math-Library/Matrix4.cs /
-@devinbroussard
-devinbroussard Added 3d math-library items
-Latest commit 8c9aeca 2 minutes ago
- History
- 1 contributor
-169 lines(155 sloc)  6.9 KB
-   
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -76,8 +45,8 @@ namespace Math_Library
         {
             return new Matrix4(
                 1, 0, 0, 0,
-                0, (float)Math.Cos(radians), (float)Math.Sin(radians), 0,
-                0, -(float)Math.Sin(radians), (float)Math.Cos(radians), 0,
+                0, (float)Math.Cos(radians), -(float)Math.Sin(radians), 0,
+                0, (float)Math.Sin(radians), (float)Math.Cos(radians), 0,
                 0, 0, 0, 1
                 );
         }
@@ -89,9 +58,9 @@ namespace Math_Library
         public static Matrix4 CreateYRotation(float radians)
         {
             return new Matrix4(
-               (float)Math.Cos(radians), 0, -(float)Math.Sin(radians), 0,
+               (float)Math.Cos(radians), 0, (float)Math.Sin(radians), 0,
                0, 1, 0, 0,
-               (float)Math.Sin(radians), 0, (float)Math.Cos(radians), 0,
+               -(float)Math.Sin(radians), 0, (float)Math.Cos(radians), 0,
                0, 0, 0, 1);
         }
 
@@ -102,8 +71,8 @@ namespace Math_Library
         public static Matrix4 CreateZRotation(float radians)
         {
             return new Matrix4(
-                (float)Math.Cos(radians), (float)Math.Sin(radians), 0, 0,
-                -(float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0,
+                (float)Math.Cos(radians), -(float)Math.Sin(radians), 0, 0,
+                (float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
         }
@@ -198,16 +167,3 @@ namespace Math_Library
         }
     }
 }
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete

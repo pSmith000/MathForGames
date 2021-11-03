@@ -66,7 +66,7 @@ namespace MathForGames
 
             Actor planet2 = new Actor(2, 2, "Planet2", "Images/planet.png");
 
-            Actor planet3 = new Actor(.5f, .5f, "Planet2", "Images/planet2.png");
+            Actor planet3 = new Actor(.5f, .5f, "Planet3", "Images/planet2.png");
 
             Actor sun = new Actor(800, 1, "Sun", "Images/sun.png");
 
@@ -90,6 +90,10 @@ namespace MathForGames
             planet.AddChild(planet2);
             planet2.AddChild(planet3);
             CircleCollider playerCircleCollider = new CircleCollider(28, player);
+            CircleCollider planetCircleCollider = new CircleCollider(24, planet);
+            CircleCollider planet2CircleCollider = new CircleCollider(29, planet2);
+            CircleCollider planet3CircleCollider = new CircleCollider(10, planet3);
+            CircleCollider sunCircleCollider = new CircleCollider(180, sun);
 
             //Enemy actor = new Enemy( 80, 80, 50, player, "Actor", "Images/enemy.png");
             //actor.SetScale(50, 50);
@@ -97,8 +101,11 @@ namespace MathForGames
             //actor.Collider = enemyCollider;
             //actor.Forward = (new Vector2(700, 900));
 
-            //AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
-            //player.Collider = playerCircleCollider;
+            player.Collider = playerCircleCollider;
+            planet.Collider = planetCircleCollider;
+            planet2.Collider = planet2CircleCollider;
+            planet3.Collider = planet3CircleCollider;
+            sun.Collider = sunCircleCollider;
 
             
             

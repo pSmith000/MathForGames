@@ -30,6 +30,11 @@ namespace MathForGames
             get { return _started; }
         }
 
+        public string Name
+        {
+            get { return _name; }
+        }
+
         public Vector2 LocalPosition
         {
             get { return new Vector2(_translation.M02, _translation.M12);  }
@@ -39,25 +44,41 @@ namespace MathForGames
             }
         }
 
+        /// <summary>
+        /// The position of this actor in the world
+        /// </summary>
         public Vector2 WorldPosition
         {
-            get { return new Vector2(GlobalTransform.M02, GlobalTransform.M12); }
+            //Return the global transform's T column
+            get { return new Vector2(_globalTransform.M02, _globalTransform.M12); }
             set
             {
-                SetTranslation(value.X, value.Y);
+                //If the acto has a parent...
+                if (Parent != null)
+                {
+                    //...convert the world coordinates into the local coordinates and translate the actor
+                    float xOffset = (value.X - Parent.WorldPosition.X) / new Vector2(_globalTransform.M00, _globalTransform.M10).Magnitude;
+                    float yOffset = (value.Y - Parent.WorldPosition.Y) / new Vector2(_globalTransform.M10, _globalTransform.M11).Magnitude;
+
+                    SetTranslation(xOffset, yOffset);
+                }
+                //If this actor doesn't have a parent...
+                else
+                    //...set the position to the given value
+                    LocalPosition = value;
             }
         }
 
         public Matrix3 GlobalTransform
         {
             get { return _globalTransform; }
-            set { _globalTransform = value; }
+            private set { _globalTransform = value; }
         }
 
         public Matrix3 LocalTransform
         {
             get { return _localTransform; }
-            set { _localTransform = value; }
+            private set { _localTransform = value; }
         }
 
         public Actor Parent
@@ -73,7 +94,13 @@ namespace MathForGames
 
         public Vector2 Size
         {
-            get { return new Vector2(_scale.M00, _scale.M11); }
+            get 
+            {
+                float xScale = new Vector2(_scale.M00, _scale.M10).Magnitude;
+                float yScale = new Vector2(_scale.M01, _scale.M11).Magnitude;
+
+                return new Vector2(xScale, yScale); 
+            }
             set { SetScale(value.X, value.Y); }
         }
 
@@ -139,6 +166,7 @@ namespace MathForGames
             //Set the old array to be the new array
             _children = tempArray;
 
+            //Set the parent of the child to be this actor
             child.Parent = this;
 
         }
@@ -170,11 +198,14 @@ namespace MathForGames
 
             //If the actor removal was successful...
             if (childRemoved)
+            {
                 //...set the old array to be the new array
                 _children = tempArray;
 
-            child.Parent = null;
-
+                //Set the parent of the child to be nothing
+                child.Parent = null;
+            }
+           
             return childRemoved;
         }
 
@@ -197,14 +228,18 @@ namespace MathForGames
                 Rotate(deltaTime);
             if (_name == "Sun")
                 Rotate(deltaTime / 4);
+
+            if (_name != "Star")
+                Console.WriteLine(_name + " X: " + WorldPosition.X + "|| Y: " + WorldPosition.Y);
                 
         }
 
         public virtual void Draw()
         {
             if (_sprite != null)
-                _sprite.Draw(GlobalTransform);
-            //Collider.Draw();
+                _sprite.Draw(_globalTransform);
+            if (_name != "Star")
+                Collider.Draw();
         }
 
         public void End()
