@@ -146,7 +146,7 @@ namespace MathForGames
             if (Parent != null)
                 GlobalTransform = Parent.GlobalTransform * LocalTransform;
             else
-                GlobalTransform = LocalTransform;
+                GlobalTransform = LocalTransform; 
         }
 
         public void AddChild(Actor child)
