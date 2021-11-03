@@ -14,6 +14,7 @@ namespace MathForGames
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
         private Stopwatch _stopwatch = new Stopwatch();
+        private Camera3D _camera = new Camera3D();
 
         /// <summary>
         /// Called to begin the application
