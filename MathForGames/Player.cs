@@ -41,6 +41,8 @@ namespace MathForGames
             //Create a vector that stores the move input
             Vector2 moveDirection = new Vector2(xDirection, yDirection);
 
+            
+
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
             if (Velocity.Magnitude > 0)

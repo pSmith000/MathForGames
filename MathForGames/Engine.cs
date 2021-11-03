@@ -62,23 +62,51 @@ namespace MathForGames
 
             Scene scene = new Scene();
 
+            Actor planet = new Actor(300, 200, "Planet", "Images/earth.png");
+
+            Actor planet2 = new Actor(2, 2, "Planet2", "Images/planet.png");
+
+            Actor planet3 = new Actor(.5f, .5f, "Planet2", "Images/planet2.png");
+
+            Actor sun = new Actor(800, 1, "Sun", "Images/sun.png");
+
+            for (int i = 0; i < 150; i++)
+            {
+                Random rnd = new Random();
+                int numx = rnd.Next(1, 800);
+                int numy = rnd.Next(1, 500);
+                Actor star = new Actor(numx, numy, "Star", "Images/star.png");
+                star.SetScale(10, 10);
+                scene.AddActor(star);
+            }
+
+            sun.SetScale(600, 600);
+            planet.SetScale(50, 50);
+            planet2.SetScale(2, 2);
+            planet3.SetScale(.2f, .2f);
+
             Player player = new Player(10, 10, 200, "Player", "Images/player.png");
             player.SetScale(50, 50);
+            planet.AddChild(planet2);
+            planet2.AddChild(planet3);
             CircleCollider playerCircleCollider = new CircleCollider(28, player);
 
-            Enemy actor = new Enemy( 80, 80, 50, player, "Actor", "Images/enemy.png");
-            actor.SetScale(50, 50);
-            AABBCollider enemyCollider = new AABBCollider(50, 50, actor);
-            actor.Collider = enemyCollider;
-            actor.Forward = (new Vector2(700, 900));
+            //Enemy actor = new Enemy( 80, 80, 50, player, "Actor", "Images/enemy.png");
+            //actor.SetScale(50, 50);
+            //AABBCollider enemyCollider = new AABBCollider(50, 50, actor);
+            //actor.Collider = enemyCollider;
+            //actor.Forward = (new Vector2(700, 900));
 
-            AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
-            player.Collider = playerCircleCollider;
+            //AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
+            //player.Collider = playerCircleCollider;
 
-
-
+            
+            
+            scene.AddActor(planet2);
+            scene.AddActor(planet);
+            scene.AddActor(planet3);
             scene.AddActor(player);
-            scene.AddActor(actor);
+            scene.AddActor(sun);
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
         }
@@ -101,7 +129,7 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.PINK);
+            Raylib.ClearBackground(Color.BLACK);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();

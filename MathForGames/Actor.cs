@@ -41,27 +41,34 @@ namespace MathForGames
 
         public Vector2 WorldPosition
         {
-            get; set;
+            get { return new Vector2(GlobalTransform.M02, GlobalTransform.M12); }
+            set
+            {
+                SetTranslation(value.X, value.Y);
+            }
         }
 
         public Matrix3 GlobalTransform
         {
-            get; set;
+            get { return _globalTransform; }
+            set { _globalTransform = value; }
         }
 
         public Matrix3 LocalTransform
         {
-            get; set;
+            get { return _localTransform; }
+            set { _localTransform = value; }
         }
 
         public Actor Parent
         {
-            get; set;
+            get { return _parent; }
+            set { _parent = value; }
         }
 
         public Actor[] Children
         {
-            get;
+            get { return _children; }
         }
 
         public Vector2 Size
@@ -107,17 +114,68 @@ namespace MathForGames
 
         public void UpdateTransforms()
         {
+            _localTransform = _translation * _rotation * _scale;
 
+            if (Parent != null)
+                GlobalTransform = Parent.GlobalTransform * LocalTransform;
+            else
+                GlobalTransform = LocalTransform;
         }
 
         public void AddChild(Actor child)
         {
+            //Create a temp array larger than the original
+            Actor[] tempArray = new Actor[_children.Length + 1];
+
+            //Copy all values from the original array into the temp array
+            for (int i = 0; i < _children.Length; i++)
+            {
+                tempArray[i] = _children[i];
+            }
+
+            //Add the new child to the end of the new array
+            tempArray[_children.Length] = child;
+
+            //Set the old array to be the new array
+            _children = tempArray;
+
+            child.Parent = this;
 
         }
 
         public bool RemoveChild(Actor child)
         {
+            //Create a variable to store if the removal was successful
+            bool childRemoved = false;
 
+            //Create a new array that is smaller than the original
+            Actor[] tempArray = new Actor[_children.Length - 1];
+
+            //Copy all values except the actor we don't want into the new array
+            int j = 0;
+            for (int i = 0; i < tempArray.Length; i++)
+            {
+                //If the actor that the loop is on is not the one to remove...
+                if (_children[i] != child)
+                {
+                    //...add the actor back into the new array
+                    tempArray[j] = _children[i];
+                    j++;
+                }
+                //Otherwise if this actor is the one to remove...
+                else
+                    //...set actorRemoved to true
+                    childRemoved = true;
+            }
+
+            //If the actor removal was successful...
+            if (childRemoved)
+                //...set the old array to be the new array
+                _children = tempArray;
+
+            child.Parent = null;
+
+            return childRemoved;
         }
 
         public virtual void Start()
@@ -127,15 +185,26 @@ namespace MathForGames
 
         public virtual void Update(float deltaTime)
         {
-            _localTransform = _translation * _rotation * _scale;
-            Console.WriteLine(_name + ": " + LocalPosition.X + ", " + LocalPosition.Y);
+            UpdateTransforms();
+
+            foreach (Actor child in _children)
+            {
+                Rotate(deltaTime);
+                child.Rotate(3 * deltaTime);
+            }
+
+            if (_name == "Star")
+                Rotate(deltaTime);
+            if (_name == "Sun")
+                Rotate(deltaTime / 4);
+                
         }
 
         public virtual void Draw()
         {
             if (_sprite != null)
-                _sprite.Draw(_localTransform);
-            Collider.Draw();
+                _sprite.Draw(GlobalTransform);
+            //Collider.Draw();
         }
 
         public void End()
