@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Math_Library
+namespace MathLibrary
 {
     public struct Matrix4
     {
@@ -41,7 +41,7 @@ namespace Math_Library
         /// Creates a new matrix that has been rotated by the given value in radians
         /// </summary>
         /// <param name="radians">The result of the rotation</param>
-        public static Matrix4 CreateXRotation(float radians)
+        public static Matrix4 CreateRotationX(float radians)
         {
             return new Matrix4(
                 1, 0, 0, 0,
@@ -55,7 +55,7 @@ namespace Math_Library
         /// Creates a new matrix that has been rotated by the given value in radians
         /// </summary>
         /// <param name="radians">The result of the rotation</param>
-        public static Matrix4 CreateYRotation(float radians)
+        public static Matrix4 CreateRotationY(float radians)
         {
             return new Matrix4(
                (float)Math.Cos(radians), 0, (float)Math.Sin(radians), 0,
@@ -68,7 +68,7 @@ namespace Math_Library
         /// Creates a new matrix that has been rotated by the given value in radians
         /// </summary>
         /// <param name="radians">The result of the rotation</param>
-        public static Matrix4 CreateZRotation(float radians)
+        public static Matrix4 CreateRotationZ(float radians)
         {
             return new Matrix4(
                 (float)Math.Cos(radians), -(float)Math.Sin(radians), 0, 0,
@@ -81,12 +81,12 @@ namespace Math_Library
         /// Creates a new matrix that has been translated by the given value
         /// </summary>
         /// <param name="translation">The position of the new matrix</param>
-        public static Matrix4 CreateTranslation(float x, float y)
+        public static Matrix4 CreateTranslation(float x, float y, float z)
         {
             return new Matrix4(
                 1, 0, 0, x,
                 0, 1, 0, y,
-                0, 0, 1, 0,
+                0, 0, 1, z,
                 0, 0, 0, 1
                 );
         }
@@ -95,12 +95,12 @@ namespace Math_Library
         /// Creates a new matrix that has been scaled by the given value
         /// </summary>
         /// <param name="scale">The result of the scale</param>
-        public static Matrix4 CreateScale(float x, float y)
+        public static Matrix4 CreateScale(float x, float y, float z)
         {
             return new Matrix4(
                 x, 0, 0, 0,
                 0, y, 0, 0,
-                0, 0, 1, 0,
+                0, 0, z, 0,
                 0, 0, 0, 1
                 );
         }
@@ -165,5 +165,8 @@ namespace Math_Library
                 ((lhs.M30 * rhs.M03) + (lhs.M31 * rhs.M13) + (lhs.M32 * rhs.M23) + (lhs.M33 * rhs.M33))
                 );
         }
+
+        
+
     }
 }

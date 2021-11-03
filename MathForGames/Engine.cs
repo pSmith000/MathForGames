@@ -51,6 +51,15 @@ namespace MathForGames
 
         }
 
+        private void InitializeCamera()
+        {
+            _camera.position = new System.Numerics.Vector3(0, 10, 10); // Camera Position
+            _camera.target = new System.Numerics.Vector3(0, 0, 0); // Point the camera is focused on
+            _camera.up = new System.Numerics.Vector3(0, 1, 0); // Camera up vector (rotation towards target)
+            _camera.fovy = 45; // Camera field of view Y
+            _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; // Camera mode type
+        }
+
         /// <summary>
         /// Calledwhen the application starts
         /// </summary>
@@ -61,40 +70,15 @@ namespace MathForGames
             Raylib.InitWindow(800, 450, "Math for Games");
             Raylib.SetTargetFPS(60);
 
+            InitializeCamera();
+
             Scene scene = new Scene();
 
-            Actor planet = new Actor(300, 200, "Planet", "Images/earth.png");
 
-            Actor planet2 = new Actor(2, 2, "Planet2", "Images/planet.png");
-
-            Actor planet3 = new Actor(.5f, .5f, "Planet3", "Images/planet2.png");
-
-            Actor sun = new Actor(800, 1, "Sun", "Images/sun.png");
-
-            for (int i = 0; i < 150; i++)
-            {
-                Random rnd = new Random();
-                int numx = rnd.Next(1, 800);
-                int numy = rnd.Next(1, 500);
-                Actor star = new Actor(numx, numy, "Star", "Images/star.png");
-                star.SetScale(10, 10);
-                scene.AddActor(star);
-            }
-
-            sun.SetScale(600, 600);
-            planet.SetScale(50, 50);
-            planet2.SetScale(2, 2);
-            planet3.SetScale(.2f, .2f);
-
-            Player player = new Player(10, 10, 200, "Player", "Images/player.png");
-            player.SetScale(50, 50);
-            planet.AddChild(planet2);
-            planet2.AddChild(planet3);
+            Player player = new Player(0, 0, 10, "Player", Shape.SPHERE);
+            player.SetScale(1, 1, 1);
             CircleCollider playerCircleCollider = new CircleCollider(28, player);
-            CircleCollider planetCircleCollider = new CircleCollider(24, planet);
-            CircleCollider planet2CircleCollider = new CircleCollider(29, planet2);
-            CircleCollider planet3CircleCollider = new CircleCollider(10, planet3);
-            CircleCollider sunCircleCollider = new CircleCollider(180, sun);
+
 
             //Enemy actor = new Enemy( 80, 80, 50, player, "Actor", "Images/enemy.png");
             //actor.SetScale(50, 50);
@@ -103,18 +87,9 @@ namespace MathForGames
             //actor.Forward = (new Vector2(700, 900));
 
             player.Collider = playerCircleCollider;
-            planet.Collider = planetCircleCollider;
-            planet2.Collider = planet2CircleCollider;
-            planet3.Collider = planet3CircleCollider;
-            sun.Collider = sunCircleCollider;
 
-            
-            
-            scene.AddActor(planet2);
-            scene.AddActor(planet);
-            scene.AddActor(planet3);
             scene.AddActor(player);
-            scene.AddActor(sun);
+
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
         }
@@ -137,11 +112,15 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.BLACK);
+            Raylib.BeginMode3D(_camera);
+
+            Raylib.ClearBackground(Color.RAYWHITE);
+            Raylib.DrawGrid(50, 1);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();
 
+            Raylib.EndMode3D();
             Raylib.EndDrawing();
         }
 

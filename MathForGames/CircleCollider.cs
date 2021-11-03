@@ -27,7 +27,7 @@ namespace MathForGames
                 return false;
 
             //Find the distance between the two actors
-            float distance = Vector2.Distance(other.Owner.WorldPosition, Owner.WorldPosition);
+            float distance = Vector3.Distance(other.Owner.WorldPosition, Owner.WorldPosition);
             //Find the length of the radii combined
             float combinedRadii = other.CollisionRadius + CollisionRadius;
 
@@ -41,17 +41,17 @@ namespace MathForGames
                 return false;
 
             //Get the direction from this collider to the AABB
-            Vector2 direction = Owner.WorldPosition - other.Owner.WorldPosition;
+            Vector3 direction = Owner.WorldPosition - other.Owner.WorldPosition;
 
             //Clamp the direction vector to hbe within the bounds of the AABB
             direction.X = Math.Clamp(direction.X, -other.Width/2, other.Width/2);
             direction.Y = Math.Clamp(direction.Y, -other.Height/2, other.Height/2);
 
             //Add the direction vector to the AABB center to get the closest point to the circle
-            Vector2 closestPoint = other.Owner.WorldPosition + direction;
+            Vector3 closestPoint = other.Owner.WorldPosition + direction;
 
             //Find the distance from the circle's center to the closest point
-            float distanceFromClosestPoint = Vector2.Distance(Owner.WorldPosition, closestPoint);
+            float distanceFromClosestPoint = Vector3.Distance(Owner.WorldPosition, closestPoint);
 
             //Return whether or not the distance is less then the circle's radius
             return distanceFromClosestPoint <= CollisionRadius;

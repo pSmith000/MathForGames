@@ -9,7 +9,7 @@ namespace MathForGames
     class Enemy : Actor
     {
         private float _speed;
-        private Vector2 _velocity;
+        private Vector3 _velocity;
         private Player _player;
 
         public float Speed
@@ -18,14 +18,14 @@ namespace MathForGames
             set { _speed = value; }
         }
 
-        public Vector2 Velocity
+        public Vector3 Velocity
         {
             get { return _velocity; }
             set { _velocity = value; }
         }
 
-        public Enemy(float x, float y, float speed, Player player, string name = "Actor", string path = "")
-            : base( x, y, name, path)
+        public Enemy(float x, float y, float speed, Player player, string name = "Actor", Shape shape = Shape.CUBE)
+            : base( x, y, name, shape)
         {
             _player = player;
             _speed = speed;
@@ -33,7 +33,7 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
-            Vector2 moveDirection = _player.LocalPosition - LocalPosition;
+            Vector3 moveDirection = _player.LocalPosition - LocalPosition;
 
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 

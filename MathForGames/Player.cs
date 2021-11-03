@@ -9,7 +9,7 @@ namespace MathForGames
     class Player : Actor
     {
         private float _speed;
-        private Vector2 _velocity;
+        private Vector3 _velocity;
         int i = 80;
 
         public float Speed
@@ -18,14 +18,14 @@ namespace MathForGames
             set { _speed = value; }
         }
 
-        public Vector2 Velocity
+        public Vector3 Velocity
         {
             get { return _velocity; }
             set { _velocity = value; }
         }
 
-        public Player(float x, float y, float speed, string name = "Actor", string path = "") 
-            : base( x, y, name, path)
+        public Player(float x, float y, float speed, string name = "Actor", Shape shape = Shape.CUBE) 
+            : base( x, y, name, shape)
         {
             _speed = speed;
         }
@@ -35,18 +35,15 @@ namespace MathForGames
             //Get the player input direction
             int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
-            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W))
+            int zDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W))
                 + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
             //Create a vector that stores the move input
-            Vector2 moveDirection = new Vector2(xDirection, yDirection);
+            Vector3 moveDirection = new Vector3(xDirection, 0, zDirection);
 
             
 
             Velocity = moveDirection.Normalized * Speed * deltaTime;
-
-            if (Velocity.Magnitude > 0)
-                Forward = Velocity.Normalized;
 
             LocalPosition += Velocity;
 
