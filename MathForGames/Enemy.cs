@@ -33,11 +33,13 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
+            
             Vector3 moveDirection = _player.LocalPosition - LocalPosition;
 
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
-            LocalPosition += Velocity;
+            WorldPosition += Velocity;
+            
 
             base.Update(deltaTime);
         }

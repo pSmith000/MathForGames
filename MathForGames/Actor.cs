@@ -239,7 +239,7 @@ namespace MathForGames
             switch (_shape)
             {
                 case Shape.CUBE:
-                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.BLACK);
+                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.RED);
                     break;
                 case Shape.SPHERE:
                     Raylib.DrawSphere(position, Size.X, Color.BLUE);
