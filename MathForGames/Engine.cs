@@ -79,10 +79,13 @@ namespace MathForGames
             player = new Player(0, 0, 40, "Player", Shape.SPHERE);
             player.SetScale(1, 1, 1);
             CircleCollider playerCircleCollider = new CircleCollider(28, player);
+            player.SetColor(new Vector4(51, 42, 8, 255));
+            player.LookAt(new Vector3(1, 0, 0));
 
             Enemy enemy = new Enemy(0, 0, 10, player, "Enemy", Shape.CUBE);
             enemy.SetScale(1, 1, 1);
             CircleCollider enemyCircleCollider = new CircleCollider(28, enemy);
+            //enemy.SetColor(new Vector4(51, 42, 8, 255));
 
             //Enemy actor = new Enemy( 80, 80, 50, player, "Actor", "Images/enemy.png");
             //actor.SetScale(50, 50);
@@ -106,8 +109,8 @@ namespace MathForGames
         {
             _scenes[_currentSceneIndex].Update(deltaTime);
 
-            _camera.target = new System.Numerics.Vector3(player.WorldPosition.X, player.WorldPosition.Y, player.WorldPosition.Z - 5);
-            _camera.position = new System.Numerics.Vector3(player.WorldPosition.X, player.WorldPosition.Y + 1, player.WorldPosition.Z);
+            //_camera.target = new System.Numerics.Vector3(player.WorldPosition.X, player.WorldPosition.Y, player.WorldPosition.Z - 5);
+            //_camera.position = new System.Numerics.Vector3(player.WorldPosition.X, player.WorldPosition.Y + 1, player.WorldPosition.Z);
                 
             
             while (Console.KeyAvailable)

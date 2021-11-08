@@ -39,7 +39,8 @@ namespace MathForGames
             Velocity = moveDirection.Normalized * Speed * deltaTime;
 
             WorldPosition += Velocity;
-            
+
+            LookAt(_player.WorldPosition);
 
             base.Update(deltaTime);
         }

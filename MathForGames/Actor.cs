@@ -26,6 +26,12 @@ namespace MathForGames
         private Actor[] _children = new Actor[0];
         private Actor _parent;
         private Shape _shape;
+        private Color _color = new Color(255, 255, 255, 255);
+
+        public Color ShapeColor
+        {
+            get { return _color; }
+        }
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -234,17 +240,21 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            System.Numerics.Vector3 position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+            System.Numerics.Vector3 startPosition = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+            System.Numerics.Vector3 endPosition = new System.Numerics.Vector3(WorldPosition.X + Forward.X * 50, WorldPosition.Y + Forward.Y * 50, WorldPosition.Z + Forward.Z * 50);
+
 
             switch (_shape)
             {
                 case Shape.CUBE:
-                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.RED);
+                    Raylib.DrawCube(startPosition, Size.X, Size.Y, Size.Z, ShapeColor);
                     break;
                 case Shape.SPHERE:
-                    Raylib.DrawSphere(position, Size.X, Color.BLUE);
+                    Raylib.DrawSphere(startPosition, Size.X, ShapeColor);
                     break;
             }
+
+            Raylib.DrawLine3D(startPosition, endPosition, Color.RED);
         }
 
         public void End()
@@ -308,17 +318,74 @@ namespace MathForGames
         /// <param name="position">The position the actor should be looking at</param>
         public void LookAt(Vector3 position)
         {
+            //Get the direction for the actor to look in
             Vector3 direction = (position - WorldPosition).Normalized;
 
+            //If the direction has a length of 0...
             if (direction.Magnitude == 0)
+                //...set it to be the default forward
                 direction = new Vector3(0, 0, 1);
 
+            //Create a vector that points directly upwards
             Vector3 alignAxis = new Vector3(0, 1, 0);
 
+            //Create two new vectors that will be the new x and y axis
             Vector3 newYAxis = new Vector3(0, 1, 0);
             Vector3 newXAxis = new Vector3(1, 0, 0);
 
+            //If the direction vector is parallel to the alignAxis vector...
+            if (Math.Abs(direction.Y) > 0 && direction.X == 0 && direction.Z == 0)
+            {
+                //...set the alignAxis vector to point to the right
+                alignAxis = new Vector3(1, 0, 0);
 
+                //Get the cross product of the direction and the right to find the y axis
+                newYAxis = Vector3.CrossProduct(direction, alignAxis);
+                //Normalize the new y axis to prevent the matrix from being scaled
+                newYAxis.Normalize();
+
+                //Get the cross product of the new y axis and the direction to find the new x axis
+                newXAxis = Vector3.CrossProduct(newYAxis, direction);
+                //Normalize the new x axis to prevent the matrix from being scaled
+                newXAxis.Normalize();
+            }
+            //If the direction vector is not parallel...
+            else
+            {
+                //Get the cross product of the alignAxis and the direction vector
+                newXAxis = Vector3.CrossProduct(alignAxis, direction);
+                //Normalize the new x axis to prevent the matrix from being scaled
+                newXAxis.Normalize();
+
+                //Get the cross product of the direction and new x axis
+                newYAxis = Vector3.CrossProduct(direction, newXAxis);
+                //Normalize the new y axis to prevent the matrix from being scaled
+                newYAxis.Normalize();
+            }
+
+            //Create a new matrix with the new axis
+            _rotation = new Matrix4(newXAxis.X, newYAxis.X, direction.X, 0,
+                                    newXAxis.Y, newYAxis.Y, direction.Y, 0,
+                                    newXAxis.Z, newYAxis.Z, direction.Z, 0,
+                                    0, 0, 0, 1);
+        }
+
+        /// <summary>
+        /// Sets the color to a Raylib preset color
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        /// <summary>
+        /// First value is red, second value, is green, third value is blue, and fourth value is transparency
+        /// </summary>
+        /// <param name="colorValue"></param>
+        public void SetColor(Vector4 colorValue)
+        {
+            _color = new Color((int)colorValue.X, (int)colorValue.Y, (int)colorValue.Z, (int)colorValue.W);
         }
     }
 }

@@ -36,6 +36,17 @@ namespace MathLibrary
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
         }
 
+        public static Vector4 CrossProduct(Vector4 lhs, Vector4 rhs)
+        {
+            return new Vector4
+            {
+                X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
+                Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
+                Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X),
+                W = 0
+            };
+        }
+
         /// <summary>
         /// Gets the normalized version of this vector without changing it
         /// </summary>
