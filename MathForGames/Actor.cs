@@ -8,6 +8,7 @@ namespace MathForGames
 {
     public enum Shape
     {
+        NONE,
         CUBE,
         SPHERE
     }
@@ -121,6 +122,12 @@ namespace MathForGames
         {
             get { return new Vector3(_rotation.M02, _rotation.M12, _rotation.M22); }
             
+        }
+
+        public Vector3 Right
+        {
+            get { return new Vector3(_rotation.M00, _rotation.M10, _rotation.M20); }
+
         }
 
         public Collider Collider

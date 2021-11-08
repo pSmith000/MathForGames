@@ -14,9 +14,8 @@ namespace MathForGames
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
         private Stopwatch _stopwatch = new Stopwatch();
-        private Camera3D _camera = new Camera3D();
+        private Camera _camera;
         Player player;
-        int x = 0;
 
         /// <summary>
         /// Called to begin the application
@@ -53,14 +52,14 @@ namespace MathForGames
 
         }
 
-        private void InitializeCamera()
-        {
-            _camera.position = new System.Numerics.Vector3(0, 10, 10); // Camera Position
-            _camera.target = new System.Numerics.Vector3(0, 0, 0); // Point the camera is focused on
-            _camera.up = new System.Numerics.Vector3(0, 1, 0); // Camera up vector (rotation towards target)
-            _camera.fovy = 45; // Camera field of view Y
-            _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; // Camera mode type
-        }
+        //private void InitializeCamera()
+        //{
+        //    _camera.position = new System.Numerics.Vector3(0, 10, 10); // Camera Position
+        //    _camera.target = new System.Numerics.Vector3(0, 0, 0); // Point the camera is focused on
+        //    _camera.up = new System.Numerics.Vector3(0, 1, 0); // Camera up vector (rotation towards target)
+        //    _camera.fovy = 45; // Camera field of view Y
+        //    _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; // Camera mode type
+        //}
 
         /// <summary>
         /// Calledwhen the application starts
@@ -72,17 +71,20 @@ namespace MathForGames
             Raylib.InitWindow(800, 450, "Math for Games");
             Raylib.SetTargetFPS(60);
 
-            InitializeCamera();
+            
 
             Scene scene = new Scene();
-
-            player = new Player(0, 0, 40, "Player", Shape.SPHERE);
+         
+            player = new Player(0, 0, 20, "Player", Shape.SPHERE);
+            _camera = new Camera(player);
             player.SetScale(1, 1, 1);
             CircleCollider playerCircleCollider = new CircleCollider(28, player);
             player.SetColor(new Vector4(51, 42, 8, 255));
             player.LookAt(new Vector3(1, 0, 0));
+            player.AddChild(_camera);
 
-            Enemy enemy = new Enemy(0, 0, 10, player, "Enemy", Shape.CUBE);
+            Enemy enemy = new Enemy(0, 0, 5, player, "Enemy", Shape.CUBE);
+            enemy.SetColor(new Vector4(255, 0, 0, 255));
             enemy.SetScale(1, 1, 1);
             CircleCollider enemyCircleCollider = new CircleCollider(28, enemy);
             //enemy.SetColor(new Vector4(51, 42, 8, 255));
@@ -97,6 +99,7 @@ namespace MathForGames
 
             scene.AddActor(player);
             scene.AddActor(enemy);
+            scene.AddActor(_camera);
 
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
@@ -124,10 +127,10 @@ namespace MathForGames
         private void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.BeginMode3D(_camera);
+            Raylib.BeginMode3D(_camera.Camera3D);
 
             Raylib.ClearBackground(Color.RAYWHITE);
-            Raylib.DrawGrid(50, 1);
+            Raylib.DrawGrid(100, 10);
 
             //Adds all actor icons to buffer
             _scenes[_currentSceneIndex].Draw();
