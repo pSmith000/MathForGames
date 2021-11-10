@@ -36,10 +36,13 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
-            // Camera position
-            _camera3D.position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
-            // Point the camera is focused on
-            _camera3D.target = new System.Numerics.Vector3(_target.WorldPosition.X, _target.WorldPosition.Y, _target.WorldPosition.Z);
+            //// Camera position
+            //_camera3D.position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+            //// Point the camera is focused on
+            //_camera3D.target = new System.Numerics.Vector3(_target.WorldPosition.X, _target.WorldPosition.Y, _target.WorldPosition.Z);
+
+            _camera3D.target = new System.Numerics.Vector3(_target.WorldPosition.X, _target.WorldPosition.Y, _target.WorldPosition.Z - 5);
+            _camera3D.position = new System.Numerics.Vector3(_target.WorldPosition.X, _target.WorldPosition.Y + 1, _target.WorldPosition.Z);
 
             base.Update(deltaTime);
         }

@@ -83,6 +83,11 @@ namespace MathForGames
             player.LookAt(new Vector3(1, 0, 0));
             player.AddChild(_camera);
 
+            Actor wall = new Actor(0, 0, "Wall");
+            wall.SetScale(200, 1, 200);
+            wall.SetTranslation(30, 0, 30);
+            wall.SetColor(new Vector4(0, 0, 0, 255));
+
             Enemy enemy = new Enemy(0, 0, 5, player, "Enemy", Shape.CUBE);
             enemy.SetColor(new Vector4(255, 0, 0, 255));
             enemy.SetScale(1, 1, 1);
@@ -100,6 +105,7 @@ namespace MathForGames
             scene.AddActor(player);
             scene.AddActor(enemy);
             scene.AddActor(_camera);
+            scene.AddActor(wall);
 
             _currentSceneIndex = AddScene(scene);
             _scenes[_currentSceneIndex].Start();
@@ -112,8 +118,7 @@ namespace MathForGames
         {
             _scenes[_currentSceneIndex].Update(deltaTime);
 
-            //_camera.target = new System.Numerics.Vector3(player.WorldPosition.X, player.WorldPosition.Y, player.WorldPosition.Z - 5);
-            //_camera.position = new System.Numerics.Vector3(player.WorldPosition.X, player.WorldPosition.Y + 1, player.WorldPosition.Z);
+            
                 
             
             while (Console.KeyAvailable)

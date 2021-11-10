@@ -10,6 +10,7 @@ namespace MathForGames
     {
         private float _width;
         private float _height;
+        private float _depth;
 
         /// <summary>
         /// The size of this collider on the x axis
@@ -27,6 +28,12 @@ namespace MathForGames
         {
             get { return _height; }
             set { _height = value; }
+        }
+
+        public float Depth
+        {
+            get { return _depth; }
+            set { _depth = value; }
         }
 
         /// <summary>
